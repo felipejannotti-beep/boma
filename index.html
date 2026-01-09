@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>boma carnario — faq</title>
+    <style>
+        /* Font Loading */
+        @font-face {
+            font-family: 'Boma Mono';
+            src: url('https://raw.githubusercontent.com/felipejannotti-beep/boma/main/BOMA-MONO.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-transform: lowercase;
+            -webkit-font-smoothing: antialiased;
+            font-weight: normal !important; 
+            cursor: none; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --border-color: #ffffff;
+            --hover-bg: #ffffff;
+            --hover-text: #000000;
+            --gutter: 20px;
+            --header-height: 60px; /* Reduzido de 70px */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Boma Mono', 'Courier New', monospace;
+            font-size: 14px; /* Base font size reduced slightly */
+            line-height: 1.2;
+            overflow-x: hidden;
+            width: 100%;
+            padding-top: var(--header-height);
+        }
+
+        /* --- NOISE TEXTURE --- */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998; 
+            opacity: 0.05; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* --- CUSTOM CURSOR (Desktop Only) --- */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 15px; /* Smaller cursor */
+            height: 15px;
+            background-color: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 20001;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .custom-cursor.hovered {
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+            .custom-cursor { display: none; }
+            * { cursor: auto; }
+        }
+
+        /* --- MOBILE TAP FEEDBACK --- */
+        .touch-ripple {
+            position: absolute;
+            border: 1px solid #fff;
+            background-color: #fff;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            border-radius: 50%;
+            animation: ripple-anim 0.6s linear;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        @keyframes ripple-anim {
+            0% { width: 0; height: 0; opacity: 1; }
+            100% { width: 80px; height: 80px; opacity: 0; }
+        }
+
+        /* Fixed Header */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--gutter);
+            z-index: 9999;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            font-size: 1.2rem;
+            letter-spacing: -0.05em;
+        }
+
+        .header-btn {
+            border: 1px solid var(--border-color);
+            padding: 6px 15px; /* Compact padding */
+            font-size: 0.8rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+            background-color: var(--bg-color);
+        }
+
+        .header-btn:active {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            transform: scale(0.95);
+        }
+        
+        @media (hover: hover) {
+            .header-btn:hover {
+                background-color: var(--text-color);
+                color: var(--bg-color);
+            }
+        }
+
+        /* Layout Grid - COMPACT DESKTOP */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            min-height: calc(100vh - var(--header-height));
+            width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+            .layout-grid {
+                /* Fixed narrow width for sidebar on desktop */
+                grid-template-columns: 320px 1fr; 
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            padding: var(--gutter);
+            border-bottom: 1px solid var(--border-color);
+            height: auto;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                position: sticky;
+                top: var(--header-height);
+                height: calc(100vh - var(--header-height));
+                border-bottom: none;
+                border-right: 1px solid var(--border-color);
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        /* Video Background */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0.4; /* Slightly more subtle */
+            pointer-events: none;
+            user-select: none;
+            background-color: #000;
+        }
+
+        .iframe-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            border: none;
+        }
+
+        @media (max-width: 1023px) {
+            .sidebar {
+                /* AUMENTADO DE 320px PARA 420px PARA ACOMODAR O SPOTIFY */
+                min-height: 420px; 
+            }
+            .iframe-bg {
+                width: 100vw; 
+                height: 100vh; 
+                transform: translate(-50%, -50%) scale(1.4); 
+            }
+        }
+
+        @media (min-width: 1024px) {
+             .iframe-bg {
+                height: 140%; 
+                width: 140%;
+             }
+        }
+
+        /* Sidebar Content */
+        .sidebar-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
+        }
+
+        .brand-header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem); /* Much more compact */
+            line-height: 0.9;
+            margin-bottom: 15px;
+            letter-spacing: -0.03em;
+            word-wrap: break-word;
+            text-shadow: 0 0 20px rgba(0,0,0,0.9);
+        }
+
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Tighter gap */
+            font-size: 0.9rem;
+            text-shadow: 0 0 10px rgba(0,0,0,0.9);
+        }
+
+        .detail-block span {
+            display: block;
+            opacity: 0.8;
+            margin-bottom: 3px;
+            font-size: 0.75rem;
+        }
+
+        /* Date Grid */
+        .date-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px; 
+            width: 100%;
+            max-width: 240px; /* More compact */
+        }
+
+        .date-tag {
+            border: 1px solid var(--border-color);
+            padding: 2px 0; 
+            font-size: 0.8rem; 
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            text-align: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .date-tag:active {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            transform: scale(0.95);
+        }
+
+        @media (hover: hover) {
+            .date-tag:hover {
+                background-color: var(--text-color);
+                color: var(--bg-color);
+                border-color: var(--text-color);
+                transform: translateY(-2px); 
+            }
+        }
+
+        .sidebar-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            text-shadow: 0 0 10px rgba(0,0,0,0.9);
+        }
+        
+        /* Spotify Embed Styling */
+        .spotify-container {
+            margin-bottom: 15px;
+            width: 100%;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .spotify-container iframe {
+            border-radius: 12px;
+            background-color: transparent; /* Evita fundo branco antes de carregar */
+        }
+
+        .spotify-container:hover {
+            opacity: 1;
+        }
+        
+        @media (min-width: 1024px) {
+             .sidebar-footer {
+                margin-top: auto;
+             }
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            font-size: 0.75rem;
+        }
+
+        .blink {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-color);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Content Area */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* FAQ Styling - COMPACT */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s ease;
+        }
+
+        .faq-item.active {
+            background-color: var(--hover-bg);
+            color: var(--hover-text);
+        }
+
+        .faq-item:active {
+            background-color: #222;
+        }
+        .faq-item.active:active {
+            background-color: #ddd;
+        }
+
+        .faq-item.active .faq-question {
+            border-bottom: 1px solid #000;
+        }
+        
+        .faq-question {
+            padding: 20px var(--gutter); /* Reduced padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem; /* Smaller font */
+            min-height: 60px;
+        }
+
+        .faq-question h3 {
+            font-size: inherit;
+            word-break: break-word;
+            margin: 0;
+        }
+
+        @media (hover: hover) {
+            .faq-question:hover {
+                opacity: 0.7; 
+            }
+        }
+
+        .faq-num {
+            font-size: 0.8rem;
+            margin-right: 15px;
+            opacity: 0.5;
+            min-width: 20px;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .faq-answer-inner {
+            padding: 15px var(--gutter) 30px var(--gutter);
+            max-width: 100%;
+        }
+
+        .faq-answer p {
+             max-width: 800px;
+             word-break: break-word;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 600px;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        /* Footer */
+        .content-footer {
+            padding: 40px var(--gutter);
+            margin-top: auto;
+        }
+
+        .credits {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Marquee - Slimmer */
+        .marquee-strip {
+            background: var(--text-color);
+            color: var(--bg-color);
+            padding: 6px 0; /* Slimmer */
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            border-bottom: 1px solid var(--bg-color);
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content; 
+            animation: marquee 30s linear infinite;
+        }
+
+        .marquee-content {
+            flex-shrink: 0;
+            font-size: 0.85rem;
+            padding-right: 0; 
+            white-space: nowrap;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 5px;
+            max-width: 450px; /* Smaller modal */
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #ticketsModal .modal-content {
+            max-width: 900px;
+            max-height: 95vh;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.8rem;
+            z-index: 2;
+            line-height: 1;
+        }
+
+        .modal-close:active {
+            transform: scale(0.9);
+        }
+
+        .modal-image-container {
+            width: 100%;
+            aspect-ratio: 1080 / 1350;
+            background-color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative; 
+        }
+
+        .modal-image-container::before {
+            content: 'loading...';
+            position: absolute;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            z-index: 0;
+            opacity: 0.5;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            opacity: 0; 
+            transition: opacity 0.3s ease;
+            background-color: var(--bg-color);
+        }
+        
+        .modal-btn {
+            width: 100%;
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            padding: 12px;
+            text-align: center;
+            font-size: 1rem;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none; 
+            display: block; 
+        }
+
+        .modal-btn:active {
+            background-color: #333;
+            color: #fff;
+        }
+
+        @media (hover: hover) {
+            .modal-btn:hover {
+                opacity: 0.9;
+                letter-spacing: 1px;
+            }
+        }
+
+        .tickets-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 5px;
+            width: 100%;
+            padding-top: 30px; 
+        }
+
+        @media (min-width: 1024px) {
+            .tickets-grid {
+                grid-template-columns: repeat(3, 1fr); 
+            }
+        }
+
+        .ticket-card {
+            display: block;
+            position: relative;
+            aspect-ratio: 1080 / 1350;
+            overflow: hidden;
+            border: 1px solid var(--accent-color);
+            background-color: #111;
+        }
+
+        .ticket-card:active img {
+            transform: scale(0.98);
+        }
+
+        .ticket-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: grayscale(100%);
+        }
+
+        @media (hover: hover) {
+            .ticket-card:hover img {
+                transform: scale(1.03);
+                filter: grayscale(0%);
+            }
+        }
+
+        @media (hover: none) {
+            .ticket-card img {
+                filter: grayscale(0%);
+            }
+        }
+        
+        .ticket-date-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 4px;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 2. NOISE TEXTURE -->
+    <div class="noise-overlay"></div>
+
+    <!-- 3. CUSTOM CURSOR (Desktop) -->
+    <div class="custom-cursor" id="cursor"></div>
+
+    <!-- Fixed Header -->
+    <header class="fixed-header">
+        <div class="header-left">
+            <div class="header-logo hover-scramble" data-text="boma">boma</div>
+        </div>
+        
+        <a href="#" class="header-btn hover-target" id="headerTicketsBtn">tickets</a>
+    </header>
+
+    <div class="layout-grid">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            
+            <div class="video-container">
+                <iframe 
+                    class="iframe-bg"
+                    src="https://player.vimeo.com/video/1151662357?badge=0&autopause=0&player_id=0&app_id=58479&muted=1&loop=1&autoplay=1&background=1" 
+                    frameborder="0" 
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    title="save the date rio novo 5">
+                </iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+
+            <!-- Sidebar Content Wrapper -->
+            <div class="sidebar-content">
+                <div class="top-section">
+                    <div class="brand-header">
+                        <div style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 5px;" class="hover-scramble" data-text="faq & info">faq & info</div>
+                        <h1 class="hover-scramble" data-text="carnario 2026">carnario<br>2026</h1>
+                    </div>
+
+                    <div class="event-details">
+                        <div class="detail-block">
+                            <span>localização</span>
+                            museu do amanhã<br>
+                            rio de janeiro, br
+                        </div>
+
+                        <div class="detail-block">
+                            <span>datas confirmadas</span>
+                            <div class="date-list">
+                                <!-- Clique abre modal -->
+                                <div class="date-tag js-open-modal hover-target" data-date="13 fev">13.02</div>
+                                <div class="date-tag js-open-modal hover-target" data-date="14 fev">14.02</div>
+                                <div class="date-tag js-open-modal hover-target" data-date="16 fev">16.02</div>
+                                <div class="date-tag js-open-modal hover-target" data-date="17 fev">17.02</div>
+                                <div class="date-tag js-open-modal hover-target" data-date="20 fev">20.02</div>
+                                <div class="date-tag js-open-modal hover-target" data-date="21 fev">21.02</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-footer">
+                    <!-- SPOTIFY EMBED PLAYLIST (Re-added) -->
+                    <div class="spotify-container hover-target">
+                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4bfoGxTay5FxaGOYse9eAd?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    </div>
+
+                    <div class="status-indicator">
+                        <div class="blink"></div>
+                        <div>suporte oficial</div>
+                    </div>
+                    <div style="opacity: 0.6; font-size: 0.75rem;">
+                        role para ver as perguntas &rarr;
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Scrollable Content -->
+        <main class="content-area">
+            
+            <!-- Marquee Divider -->
+            <div class="marquee-strip">
+                <div class="marquee-track">
+                    <div class="marquee-content">
+                        ingressos disponíveis — garanta seu lugar — boma carnario — museu do amanhã — electronic music — ingressos disponíveis — garanta seu lugar —&nbsp;
+                    </div>
+                    <div class="marquee-content">
+                        ingressos disponíveis — garanta seu lugar — boma carnario — museu do amanhã — electronic music — ingressos disponíveis — garanta seu lugar —&nbsp;
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ List -->
+            <div class="faq-list">
+                
+                <div class="faq-item hover-target">
+                    <div class="faq-question">
+                        <div style="display:flex; align-items: baseline;">
+                            <span class="faq-num">01</span>
+                            <h3>horário e acesso</h3>
+                        </div>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>abertura dos portões às 22:00. o acesso ao evento é permitido até as 03:00. chegue cedo para evitar filas. entrada exclusiva pela praça mauá.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item hover-target">
+                    <div class="faq-question">
+                        <div style="display:flex; align-items: baseline;">
+                            <span class="faq-num">02</span>
+                            <h3>o que não pode levar?</h3>
+                        </div>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>proibido: garrafas, latas, bebidas, utensílios de armazenagem, embalagens rígidas com tampa, capacetes, cadeiras ou bancos, armas de fogo e armas brancas, objetos pontiagudos, cortantes e/ou perfurantes, correntes e cinturões, fogos de artifício, objetos de vidro.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item hover-target">
+                    <div class="faq-question">
+                        <div style="display:flex; align-items: baseline;">
+                            <span class="faq-num">03</span>
+                            <h3>política de ingressos</h3>
+                        </div>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>ingressos são pessoais e transferíveis apenas uma vez através da plataforma oficial. não nos responsabilizamos por ingressos adquiridos fora dos canais oficiais (cambistas).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item hover-target">
+                    <div class="faq-question">
+                        <div style="display:flex; align-items: baseline;">
+                            <span class="faq-num">04</span>
+                            <h3>regras de cancelamento</h3>
+                        </div>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>cancelamentos aceitos até 7 dias após a compra, desde que 48h antes do evento. solicitações devem ser enviadas para o email de suporte da ticketeria.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item hover-target">
+                    <div class="faq-question">
+                        <div style="display:flex; align-items: baseline;">
+                            <span class="faq-num">05</span>
+                            <h3>line-up & horários</h3>
+                        </div>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>o time table será divulgado no dia do evento em nossas redes sociais. acompanhe o instagram @weareboma para atualizações em tempo real.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                 <div class="faq-item hover-target">
+                    <div class="faq-question">
+                        <div style="display:flex; align-items: baseline;">
+                            <span class="faq-num">06</span>
+                            <h3>guarda-volumes</h3>
+                        </div>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p>disponibilizaremos lockers no local mediante taxa. o número de lockers é limitado e sujeito à disponibilidade na hora.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="content-footer">
+                <div class="credits">
+                    <span>we are boma</span>
+                    <span>rio de janeiro</span>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- SINGLE DATE MODAL -->
+    <div class="modal-overlay" id="dateModal">
+        <div class="modal-content">
+            <button class="modal-close hover-target" id="closeModalBtn">&times;</button>
+            <div class="modal-image-container">
+                <img src="" alt="Line Up" class="modal-image" id="singleDateImage">
+            </div>
+            <a href="#" target="_blank" class="modal-btn hover-target" id="singleDateLink">comprar ingressos</a>
+        </div>
+    </div>
+
+    <!-- TICKETS GRID MODAL -->
+    <div class="modal-overlay" id="ticketsModal">
+        <div class="modal-content">
+            <button class="modal-close hover-target" id="closeTicketsModalBtn">&times;</button>
+            <div class="tickets-grid" id="ticketsGrid">
+                <!-- Grid items injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        const eventsData = {
+            '13 fev': {
+                img: 'https://raw.githubusercontent.com/felipejannotti-beep/boma/main/flyer_13-fev.webp',
+                link: 'https://ingresse.com/boma-presents-jamie-jones-adam-ten/'
+            },
+            '14 fev': {
+                img: 'https://raw.githubusercontent.com/felipejannotti-beep/boma/main/flyer_14-fev.webp',
+                link: 'https://www.ingresse.com/black-coffee-carnival/'
+            },
+            '16 fev': {
+                img: 'https://raw.githubusercontent.com/felipejannotti-beep/boma/main/flyer_16-fev.webp',
+                link: 'https://www.ingresse.com/boma-presents-mochakk-dennis-cruz/'
+            },
+            '17 fev': {
+                img: 'https://raw.githubusercontent.com/felipejannotti-beep/boma/main/flyer_17-fev.webp',
+                link: 'https://www.ingresse.com/boma-presents-artbat-camelphat/'
+            },
+            '20 fev': {
+                img: 'https://raw.githubusercontent.com/felipejannotti-beep/boma/main/flyer_20-fev.webp',
+                link: 'https://www.ingresse.com/boma-presents-vintage-culture-whomadewho/'
+            },
+            '21 fev': {
+                img: 'https://raw.githubusercontent.com/felipejannotti-beep/boma/main/flyer_21-fev.webp',
+                link: 'https://www.ingresse.com/dawnpatrolboma/'
+            }
+        };
+
+        // --- INTERACTIVE SYSTEM (HAPTIC + TOUCH) ---
+        function triggerHaptic() {
+            if (navigator.vibrate) {
+                navigator.vibrate(10); // Light vibration
+            }
+        }
+
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const ripple = document.createElement('div');
+            ripple.classList.add('touch-ripple');
+            ripple.style.left = touch.clientX + 'px';
+            ripple.style.top = touch.clientY + 'px';
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        document.querySelectorAll('a, button, .faq-question, .date-tag').forEach(el => {
+            el.addEventListener('touchstart', triggerHaptic);
+            el.addEventListener('click', triggerHaptic); 
+        });
+
+        // --- CUSTOM CURSOR LOGIC ---
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        const clickableElements = document.querySelectorAll('a, button, .hover-target, .faq-question, .spotify-container');
+        clickableElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+        
+        // --- TEXT SCRAMBLE LOGIC ---
+        const chars = '!<>-_\\/[]{}—=+*^?#________';
+        function scrambleText(el) {
+            const originalText = el.getAttribute('data-text') || el.innerText;
+            if(!el.getAttribute('data-text')) el.setAttribute('data-text', originalText);
+            
+            let iterations = 0;
+            const interval = setInterval(() => {
+                el.innerText = originalText.split('').map((letter, index) => {
+                    if(index < iterations) return originalText[index];
+                    return chars[Math.floor(Math.random() * chars.length)];
+                }).join('');
+                
+                if(iterations >= originalText.length) clearInterval(interval);
+                iterations += 1/3; 
+            }, 30);
+        }
+
+        document.querySelectorAll('.hover-scramble').forEach(el => {
+            el.addEventListener('mouseenter', () => scrambleText(el));
+            // Trigger once on load for effect
+            scrambleText(el);
+        });
+
+        // --- FAQ ACCORDION LOGIC ---
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', event => {
+                const parent = item.parentElement;
+                const isActive = parent.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(other => {
+                    other.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    parent.classList.add('active');
+                }
+            });
+        });
+
+        // --- MODAL UTILS ---
+        function openModal(modalEl) {
+            modalEl.classList.add('open');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal(modalEl) {
+            modalEl.classList.remove('open');
+            document.body.style.overflow = ''; 
+        }
+
+        [document.getElementById('dateModal'), document.getElementById('ticketsModal')].forEach(m => {
+            m.addEventListener('click', (e) => {
+                if (e.target === m) closeModal(m);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal(document.getElementById('dateModal'));
+                closeModal(document.getElementById('ticketsModal'));
+            }
+        });
+
+        // --- SINGLE DATE MODAL LOGIC ---
+        const dateModal = document.getElementById('dateModal');
+        const closeDateBtn = document.getElementById('closeModalBtn');
+        const singleDateImg = document.getElementById('singleDateImage');
+        const singleDateLink = document.getElementById('singleDateLink');
+        const openDateBtns = document.querySelectorAll('.js-open-modal');
+
+        singleDateImg.onload = function() {
+            singleDateImg.style.opacity = '1';
+        };
+
+        openDateBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const dateKey = btn.getAttribute('data-date');
+                const eventInfo = eventsData[dateKey];
+                
+                singleDateImg.style.opacity = '0';
+                
+                if (eventInfo) {
+                    singleDateImg.src = eventInfo.img;
+                    singleDateLink.href = eventInfo.link;
+                } else {
+                    singleDateImg.src = 'https://via.placeholder.com/1080x1350/111111/ffffff?text=Em+breve';
+                    singleDateLink.href = '#';
+                }
+
+                openModal(dateModal);
+            });
+        });
+
+        closeDateBtn.addEventListener('click', () => closeModal(dateModal));
+
+
+        // --- TICKETS GRID MODAL LOGIC ---
+        const ticketsModal = document.getElementById('ticketsModal');
+        const headerTicketsBtn = document.getElementById('headerTicketsBtn');
+        const closeTicketsBtn = document.getElementById('closeTicketsModalBtn');
+        const ticketsGrid = document.getElementById('ticketsGrid');
+
+        Object.keys(eventsData).forEach(key => {
+            const event = eventsData[key];
+            const linkEl = document.createElement('a');
+            linkEl.href = event.link;
+            linkEl.target = "_blank";
+            linkEl.className = 'ticket-card hover-target';
+            
+            linkEl.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            linkEl.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            linkEl.addEventListener('click', triggerHaptic); 
+
+            const img = document.createElement('img');
+            img.src = event.img;
+            img.loading = "lazy";
+            
+            const label = document.createElement('div');
+            label.className = 'ticket-date-label';
+            label.innerText = key;
+
+            linkEl.appendChild(img);
+            linkEl.appendChild(label);
+            ticketsGrid.appendChild(linkEl);
+        });
+
+        headerTicketsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(ticketsModal);
+        });
+
+        closeTicketsBtn.addEventListener('click', () => closeModal(ticketsModal));
+
+    </script>
+</body>
+</html>
